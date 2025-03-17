@@ -16,6 +16,41 @@ const LinearProgrammingSolver = () => {
   const [goalPriorities, setGoalPriorities] = useState([]);
   const [goalWeights, setGoalWeights] = useState([]);
 
+
+  const sendDataToServer = async () => {
+    const requestData = {
+      problemType,
+      objectiveCoefficients,
+      objectiveType,
+      technique,
+      constraints,
+      goals,
+      unrestrictedVariables,
+      goalPriorityType,
+      goalPriorities,
+      goalWeights
+    };
+
+    try {
+      const response = await fetch("http://127.0.0.1:5000/process-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send data");
+      }
+
+      const responseData = await response.json();
+      console.log("Server Response:", responseData);
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
+
   const handleVariableChange = (index, value) => {
     let updatedCoefficients = [...objectiveCoefficients];
     updatedCoefficients[index] = value;
@@ -38,18 +73,21 @@ const LinearProgrammingSolver = () => {
     return updatedArray;
   };
 
-  const handleEquationChange = (eqIndex, varIndex, value, targetArray, setter) => {
+  const handleEquationChange = (eqIndex, key, value, targetArray, setter) => {
     let updatedArray = initializeConstraintIfNeeded(eqIndex, targetArray);
-    updatedArray[eqIndex].coefficients[varIndex] = value;
-    setter(updatedArray);
-    console.log(constraints);
-    console.log(goals);
-    console.log( objectiveType);
-
-
+  
+    if (key === "operator" || key === "rhs") {
+      // Update the operator or RHS directly in the constraint object
+      updatedArray[eqIndex][key] = value;
+    } else {
+      // Otherwise, assume it's a coefficient and update normally
+      updatedArray[eqIndex].coefficients[key] = value;
+    }
+  
+    setter([...updatedArray]); // Ensure re-render by spreading the array
+    console.log("Updated Constraints:", updatedArray);
   };
-
-
+  
 
   return (
     <div style={{ padding: "20px", margin: "auto", textAlign: "center" }}>
@@ -243,7 +281,7 @@ const LinearProgrammingSolver = () => {
         </div>
       )}
       
-      <button style={{ width: "100%", marginTop: "10px", padding: "10px", backgroundColor: "blue", color: "white", border: "none", cursor: "pointer" }}>Solve</button>
+      <button onClick={sendDataToServer} style={{ width: "100%", marginTop: "10px", padding: "10px", backgroundColor: "blue", color: "white", border: "none", cursor: "pointer" }}>Solve</button>
     </div>
   );
 };

@@ -2,14 +2,33 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend communication
 
-@app.route("/api/sort", methods=["POST"])
-def sort_array():
-    data = request.get_json()  # Get JSON data from React
-    numbers = data.get("numbers", [])  # Extract numbers array
-    sorted_numbers = sorted(numbers)  # Sort the array
-    return jsonify({"sorted_numbers": sorted_numbers})  # Send sorted array back
+# Enable CORS for all routes
+CORS(app)
+
+@app.route("/process-data", methods=["POST"])
+def process_data():
+    data = request.get_json()
+
+    # Check if required fields exist
+    required_fields = [
+        "problemType", "objectiveCoefficients", "objectiveType", "technique",
+        "constraints", "goals", "unrestrictedVariables",
+        "goalPriorityType", "goalPriorities", "goalWeights"
+    ]
+    
+    missing_fields = [field for field in required_fields if field not in data]
+    if missing_fields:
+        return jsonify({"error": "Missing fields", "missing": missing_fields}), 400
+
+    # Return approval response
+    response = {
+        "message": "Approval granted",
+        "status": "approved",
+        "receivedData": data
+    }
+
+    return jsonify(response), 200
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    app.run(debug=True)
