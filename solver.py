@@ -1,5 +1,6 @@
 from BasicSimplex import simplex_solver
-#from bigM import big_m_solver
+from BigM import big_m_method
+import numpy as np
 
 class LinearProgrammingSolver:
     def __init__(self, c, A, b, unrestricted_vars=None, constraint_types=None, method="simplex", objective="min"):
@@ -39,21 +40,17 @@ class LinearProgrammingSolver:
             optimal_value, x_values, tableau_steps = simplex_solver(self.c, self.A, self.b, self.maximize)
             self.tableau_steps = tableau_steps  
             return optimal_value, x_values, tableau_steps
-        #elif self.method == "bigm":
-        #   optimal_value, x_values, tableau_steps = big_m_solver(self.c, self.A, self.b, self.constraint_types, self.maximize)
-        #  self.tableau_steps = tableau_steps  
-        # return optimal_value, x_values, tableau_steps
-        #elif self.method == "two-phase":
-        #   optimal_value, x_values, tableau_steps = self.two_phase_simplex()
-        #   self.tableau_steps = tableau_steps
-        #   return optimal_value, x_values, tableau_steps
+        elif self.method == "bigm":
+            optimal_value, x_values, tableau_steps = big_m_method(self.c, self.A, self.b, self.constraint_types,  self.maximize)
+            self.tableau_steps = tableau_steps  
+            return optimal_value, x_values, tableau_steps
         else:
             raise ValueError(f"Unknown method: {self.method}")
-       
+  
 
     def print_tableau_steps(self):
         print("\n=== Tableau Steps ===")
         for i, step in enumerate(self.tableau_steps):          
             print(f"\nTableau at Step {i}:")
             for row in step:
-               print("  ".join(f"{val:.5f}" for val in row))  
+               print("  ".join(f"{val:.5f}" for val in row))

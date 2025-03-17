@@ -12,7 +12,7 @@ def simplex_solver(c, A, b, maximize=False):
         c = [-ci for ci in c]
     slack_identity = np.eye(num_constraints)
     initial_tableau = np.hstack([A, slack_identity, np.array(b).reshape(-1, 1)])
-    objective_row = np.array(c + [0] * (num_constraints + 1))  # Z row
+    objective_row = np.array(c + [0] * (num_constraints + 1))  
     initial_tableau = np.vstack([initial_tableau, objective_row])
     tableau_steps = [np.round(initial_tableau, 5)] 
     res = opt.linprog(c, A_ub=A, b_ub=b, method="simplex")
