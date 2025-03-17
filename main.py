@@ -17,4 +17,3 @@ optimal_value, solution, tableau_steps = solver.solve()
 print("\nOptimal Solution:", solution)
 print("Optimal Value:", optimal_value)
 solver.print_tableau_steps()
-

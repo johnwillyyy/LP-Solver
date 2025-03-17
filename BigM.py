@@ -31,6 +31,7 @@ def big_m_method(c, A, b, constraint_types, maximize=False):
             A_extended[i, num_vars + num_slack + num_surplus + artificial_count] = 1  
             artificial_vars.append(num_vars + num_slack + num_surplus + artificial_count)
             artificial_count += 1
+            
     c_extended = np.zeros(total_vars)
     c_extended[:num_vars] = c 
     for a_var in artificial_vars:
