@@ -1,6 +1,7 @@
 #from BasicSimplex import simplex_solver
 from simplex3 import simplex_method
 from BigM3 import big_m_method
+from twophase import two_phase_simplex
 #from BigM import big_m_method
 import numpy as np
 
@@ -50,6 +51,10 @@ class LinearProgrammingSolver:
             optimal_value, x_values, tableau_steps = big_m_method(self.c, self.A, self.b, self.constraint_types,  self.maximize)
             self.tableau_steps = tableau_steps  
             return optimal_value, x_values, tableau_steps
+        elif self.method == "twophase":
+            optimal_value, x_values, tableau_steps = two_phase_simplex(self.c, self.A, self.b, self.constraint_types,  self.maximize)
+            self.tableau_steps = tableau_steps  
+            return optimal_value, x_values, tableau_steps    
         else:
             raise ValueError(f"Unknown method: {self.method}")
   
