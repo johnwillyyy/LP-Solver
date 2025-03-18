@@ -1,5 +1,7 @@
-from BasicSimplex import simplex_solver
-from BigM import big_m_method
+#from BasicSimplex import simplex_solver
+from simplex3 import simplex_method
+from BigM3 import big_m_method
+#from BigM import big_m_method
 import numpy as np
 
 class LinearProgrammingSolver:
@@ -27,17 +29,21 @@ class LinearProgrammingSolver:
 
     def transform_unrestricted_vars(self):
         for index in sorted(self.unrestricted_vars, reverse=True):
-            index = int(index) 
-            for row in self.A:
-                row[index] = float(row[index]) 
-                row.insert(index + 1, -row[index]) 
-            self.c[index] = float(self.c[index]) 
-            self.c.insert(index + 1, -self.c[index])
+            index = int(index)  
 
+            self.A = self.A.tolist()
+            for i in range(len(self.A)):
+                self.A[i].insert(index + 1, -self.A[i][index])
+
+            self.A = np.array(self.A)
+
+            self.c = self.c.tolist()
+            self.c.insert(index + 1, -self.c[index])
+            self.c = np.array(self.c)  
 
     def solve(self):
         if self.method == "simplex":
-            optimal_value, x_values, tableau_steps = simplex_solver(self.c, self.A, self.b, self.maximize)
+            optimal_value, x_values, tableau_steps = simplex_method(self.c, self.A, self.b, self.maximize)
             self.tableau_steps = tableau_steps  
             return optimal_value, x_values, tableau_steps
         elif self.method == "bigm":

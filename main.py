@@ -1,17 +1,22 @@
 from solver import LinearProgrammingSolver
 import numpy as np
 
-c = [1, -1, 3] 
-A = np.array([
-    [1, 1,0],
-    [1,0,1],
-    [0,1,1]
-])
-b = [20,5,10]
-constraint_types = ["<=", "=",">="]
+# c = [1, -1, 3] 
+# A = np.array([
+#     [1, 1,0],
+#     [1,0,1],
+#     [0,1,1]
+# ])
+# b = [20,5,10]
+# constraint_types = ["<=", "=",">="]
+# method = "bigm"
+# objective = "max"
+c = np.array([1, 2,1])
+A = np.array([[1, 1,1], [2, -5,1]])
+b = np.array([7, 10])
+constraint_types = ["=", ">="]
 method = "bigm"
 objective = "max"
-
 solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method=method, objective=objective)
 optimal_value, solution, tableau_steps = solver.solve()
 print("\nOptimal Solution:", solution)
