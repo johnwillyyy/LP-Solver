@@ -39,6 +39,7 @@ def create_first_tableau(c, A, b, constraint_types, is_max=True, method=None):
             artificial_vars.append(num_vars + num_slack + num_surplus + artificial_count - 1)
             artificial_count += 1
     column_names.append("RHS")  
+    
     if method =="bigm":
         c_extended = np.zeros(total_vars)
         c_extended[:num_vars] = -c  
@@ -50,6 +51,7 @@ def create_first_tableau(c, A, b, constraint_types, is_max=True, method=None):
         for a_var in artificial_vars:
             phase1_c[a_var] = 1  
         objective_row = np.append(phase1_c, [0])
+
     tableau = np.column_stack((A_extended, b)) 
     tableau = np.row_stack((tableau, objective_row))  
     tableaux_history = [tableau.copy()]
