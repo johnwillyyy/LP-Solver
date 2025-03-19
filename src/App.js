@@ -7,8 +7,8 @@ const LinearProgrammingSolver = () => {
   const [numEquations, setNumEquations] = useState(0);
   const [numGoals, setNumGoals] = useState(0);
   const [objectiveCoefficients, setObjectiveCoefficients] = useState([]);
-  const [objectiveType, setObjectiveType] = useState("maximize");
-  const [technique, setTechnique] = useState("bigM");
+  const [objectiveType, setObjectiveType] = useState("max");
+  const [technique, setTechnique] = useState("min");
   const [constraints, setConstraints] = useState([]);
   const [goals, setGoals] = useState([]);
   const [unrestrictedVariables, setUnrestrictedVariables] = useState([]);
@@ -59,7 +59,6 @@ const LinearProgrammingSolver = () => {
   const handleUnrestrictedChange = (value) => {
     setUnrestrictedVariables((prev) => {
       const updated = prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value];
-      console.log(updated);
       return updated;
     });
   };
@@ -85,7 +84,6 @@ const LinearProgrammingSolver = () => {
     }
   
     setter([...updatedArray]); // Ensure re-render by spreading the array
-    console.log("Updated Constraints:", updatedArray);
   };
   
 
@@ -102,8 +100,8 @@ const LinearProgrammingSolver = () => {
 
         {(problemType === "normal") && (
           <select onChange={(e) => setTechnique(e.target.value)}>
-         <option value="bigM">Big M</option>
-         <option value="2phase">Two-Phase</option>
+         <option value="bigm">Big M</option>
+         <option value="twophase">Two-Phase</option>
        </select>
       )}
       </div>
@@ -135,8 +133,8 @@ const LinearProgrammingSolver = () => {
      <h2>Objective Function</h2>
      <div>
        <select onChange={(e) => setObjectiveType(e.target.value)}>
-         <option value="maximize">Maximize</option>
-         <option value="minimize">Minimize</option>
+         <option value="max">Maximize</option>
+         <option value="min">Minimize</option>
        </select>
        <span> Z = </span>
        {Array.from({ length: numVariables }).map((_, index) => (
@@ -236,7 +234,6 @@ const LinearProgrammingSolver = () => {
                     let updatedWeights = [...goalWeights];
                     updatedWeights[goalIndex] = e.target.value;
                     setGoalWeights(updatedWeights);
-                    console.log(updatedWeights);
                   }}
                 />
               ))}
@@ -255,7 +252,6 @@ const LinearProgrammingSolver = () => {
                     let updatedPriorities = [...goalPriorities];
                     updatedPriorities[goalIndex] = e.target.value;
                     setGoalPriorities(updatedPriorities);
-                    console.log(updatedPriorities);
 
                   }}
                 />
@@ -272,7 +268,7 @@ const LinearProgrammingSolver = () => {
             <label key={index} style={{ marginRight: "10px" }}>
               <input
                 type="checkbox"
-                value={`x${index + 1}`}
+                value={index}
                 onChange={(e) => handleUnrestrictedChange(e.target.value)}
               />
               {` x${index + 1}`}
