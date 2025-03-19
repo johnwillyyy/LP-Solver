@@ -34,8 +34,7 @@ def create_tableau(c, A, b, is_max=True):
     row_names = [f"S{i+1}" for i in range(num_constraints)] + ["Z"]
     return tableau, column_names, row_names
 
-
-def simplex_with_visualization(tableau, column_names, row_names, tableau_steps=[]):
+def simplex_with_visualization(tableau, column_names, row_names, is_max, tableau_steps=[]):
     """Simplex algorithm that prints and stores each iteration's tableau.
 
     Args:
@@ -49,39 +48,62 @@ def simplex_with_visualization(tableau, column_names, row_names, tableau_steps=[
         objective_value (float): Optimal objective function value.
         tableaux (list of arrays): History of tableaus at each iteration.
     """
-    
-    
     tableaux = tableau_steps.copy() if tableau_steps else []  
     if not tableau_steps:  
         tableaux.append(tableau.copy())  
+
     iteration = 1  
 
     while True:
-        if np.all(tableau[-1, :-1] >= 0):
-            break
-        col = np.argmin(tableau[-1, :-1])
+        if np.all(tableau[-1, :-1] >= 0):  
+            break  
+        col = np.argmin(tableau[-1, :-1])  
         entering_var = column_names[col]
-        if np.all(tableau[:-1, col] <= 0):
-            raise ValueError("Problem is unbounded")
-        ratios = np.full_like(tableau[:-1, -1], np.inf) 
-        non_zero_mask = tableau[:-1, col] > 0 
-        ratios[non_zero_mask] = tableau[:-1, -1][non_zero_mask] / tableau[:-1, col][non_zero_mask]
-        row = np.argmin(ratios)
-        leaving_var = row_names[row]
+
+        if np.all(tableau[:-1, col] <= 0):  
+            print("Problem is unbounded. Returning None.")
+            return None, None, tableaux  
+
+        ratios = np.full(tableau[:-1, -1].shape, np.inf)  
+        positive_mask = tableau[:-1, col] > 0  
+        ratios[positive_mask] = tableau[:-1, -1][positive_mask] / tableau[:-1, col][positive_mask]
+
+        row = np.argmin(ratios)  
+        if row >= len(row_names):
+            print("Error: row index out of bounds!")
+            return None, None, tableaux  
+
+        leaving_var = row_names[row] 
         tableau = pivot(tableau, row, col)
-        row_names[row] = entering_var 
-        tableaux.append(tableau.copy())
+
+        if row < len(row_names):
+            row_names[row] = entering_var  
+        else:
+            print(f"Warning: Row index {row} out of bounds for row_names list.")
+
+        tableaux.append(tableau.copy())  
         iteration += 1
-    solution = np.zeros(len(column_names) - 1)
-    for i in range(len(solution)):
-        if np.any(tableau[:-1, i] == 1) and np.all(tableau[:-1, i] >= 0):
-            solution[i] = tableau[np.argmax(tableau[:-1, i]), -1]
-    objective_value = tableau[-1, -1]
+        
+    solution = np.zeros(len(column_names) - 1)  # Initialize all variables as zero
+
+    for i, var_name in enumerate(column_names[:-1]):  # Ignore the RHS column
+        if var_name in row_names:  # If it's a basic variable
+            row_index = row_names.index(var_name)
+            solution[i] = tableau[row_index, -1]  # Get the RHS value
+
+    # Print all variable values (basic and non-basic)
+    print("\nVariable Values:")
+    for i, var_name in enumerate(column_names[:-1]):  # Ignore RHS
+        print(f"{var_name} = {solution[i]}")
+
+    objective_value = tableau[-1, -1] if is_max else -tableau[-1, -1]
+
     return solution, objective_value, tableaux
+
 
 def simplex_method(c,A,b,is_max=True):
     tableau, column_names, row_names = create_tableau(c,A,b,is_max)
-    return simplex_with_visualization(tableau, column_names, row_names)
+    return simplex_with_visualization(tableau, column_names, row_names, is_max)
 
 # # Example data
 # c_max = np.array([5, -4, 6, -8])
