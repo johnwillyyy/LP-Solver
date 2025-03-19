@@ -61,3 +61,4 @@ def create_first_tableau(c, A, b, constraint_types, is_max=True, method=None):
                 tableau[-1, :] -= tableau[row_idx, :]  
             tableaux_history.append(tableau.copy())
     return tableau, column_names, row_names, artificial_vars, tableaux_history
+

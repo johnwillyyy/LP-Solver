@@ -19,7 +19,7 @@ import numpy as np
 # method = "bigm"
 # objective = "max"
 
-c = np.array([1, 2,1])
+c = np.array([1, 2,1]) 
 A = np.array([[1, 1,1], [2, -5,1]])
 b = np.array([7, 10])
 constraint_types = ["=", ">="]

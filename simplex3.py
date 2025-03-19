@@ -84,16 +84,13 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max, tableau
         tableaux.append(tableau.copy())  
         iteration += 1
         
-    solution = np.zeros(len(column_names) - 1)  # Initialize all variables as zero
-
-    for i, var_name in enumerate(column_names[:-1]):  # Ignore the RHS column
-        if var_name in row_names:  # If it's a basic variable
+    solution = np.zeros(len(column_names) - 1) 
+    for i, var_name in enumerate(column_names[:-1]):  
+        if var_name in row_names: 
             row_index = row_names.index(var_name)
-            solution[i] = tableau[row_index, -1]  # Get the RHS value
-
-    # Print all variable values (basic and non-basic)
+            solution[i] = tableau[row_index, -1]  
     print("\nVariable Values:")
-    for i, var_name in enumerate(column_names[:-1]):  # Ignore RHS
+    for i, var_name in enumerate(column_names[:-1]):  
         print(f"{var_name} = {solution[i]}")
 
     objective_value = tableau[-1, -1] if is_max else -tableau[-1, -1]

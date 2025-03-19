@@ -65,3 +65,6 @@ class LinearProgrammingSolver:
             print(f"\nTableau at Step {i}:")
             for row in step:
                print("  ".join(f"{val:.5f}" for val in row))
+
+
+               
