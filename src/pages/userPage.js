@@ -16,6 +16,8 @@ const LinearProgrammingSolver = () => {
   const [goalPriorityType, setGoalPriorityType] = useState("weights"); // Weights or Priorities
   const [goalPriorities, setGoalPriorities] = useState([]);
   const [goalWeights, setGoalWeights] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
+
   const navigate = useNavigate();
 
 
@@ -34,6 +36,7 @@ const LinearProgrammingSolver = () => {
     };
 
     try {
+      setIsLoading(true); // Start loading
       const response = await fetch("http://127.0.0.1:5000/process-data", {
         method: "POST",
         headers: {
@@ -49,12 +52,17 @@ const LinearProgrammingSolver = () => {
       const responseData = await response.json();
       console.log("Server Response:zzzzzzzzzzz", responseData);
 
-      navigate("/simplex-result", { state: {
-        optimalValue: responseData.optimalZ,
-        xValues: responseData.xValues,
-        tableaux: responseData.tableau // Last tableau step
-      }});
-
+      setTimeout(() => {
+        setIsLoading(false); // Stop loading
+        navigate("/simplex-result", { 
+          state: {
+            optimalValue: responseData.optimalZ,
+            xValues: responseData.xValues,
+            tableaux: responseData.tableau // Last tableau step
+          }
+        });
+      }, 2000); // 1 second delay
+  
     } catch (error) {
       console.error("Error sending data:", error);
     }
@@ -287,6 +295,13 @@ const LinearProgrammingSolver = () => {
       )}
       
       <button onClick={sendDataToServer} style={{ width: "100%", marginTop: "10px", padding: "10px", backgroundColor: "blue", color: "white", border: "none", cursor: "pointer" }}>Solve</button>
+      {isLoading && (
+        <div className="loading-overlay">
+<div class="loader"></div>
+  <p>Hang tight! We're almost there...</p>
+</div>
+
+      )}
     </div>
   );
 };
