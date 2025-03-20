@@ -23,15 +23,16 @@ c = np.array([1, 2,1])
 A = np.array([[1, 1,1], [2, -5,1]])
 b = np.array([7, 10])
 constraint_types = ["=", ">="]
+unrestricted= [0] 
 objective = "max"
-solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="bigm", objective=objective)
+solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="bigm", objective=objective,unrestricted_vars=unrestricted)
 optimal_value, solution, tableau_steps = solver.solve()
 print("\nOptimal Solution:", solution)
 print("Optimal Value:", optimal_value)
 solver.print_tableau_steps()
 print("---------------------------------------------------------------------------------------------")
 print("carcourrr")
-solver1 = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="twophase", objective=objective)
+solver1 = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="twophase", objective=objective,unrestricted_vars=unrestricted)
 optimal_value, solution, tableau_steps = solver1.solve()
 print("\nOptimal Solution:", solution)
 print("Optimal Value:", optimal_value)

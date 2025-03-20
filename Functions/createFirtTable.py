@@ -18,7 +18,7 @@ def create_first_tableau(c, A, b, constraint_types, is_max=True, method=None):
     artificial_count = 1
     artificial_vars = []
     column_names = [f"x{i+1}" for i in range(num_vars)]
-    row_names = [f"Constraint {i+1}" for i in range(num_constraints)]
+    row_names = [f"a{i+1}" for i in range(num_constraints)]
 
     for i, t in enumerate(constraint_types):
         if t == "<=":
@@ -39,6 +39,8 @@ def create_first_tableau(c, A, b, constraint_types, is_max=True, method=None):
             artificial_vars.append(num_vars + num_slack + num_surplus + artificial_count - 1)
             artificial_count += 1
     column_names.append("RHS")  
+    row_names.append("Z")  
+
     
     if method =="bigm":
         c_extended = np.zeros(total_vars)

@@ -23,25 +23,25 @@ import numpy as np
 def main(received_data):
 
     problem_type, objective_type, technique, objective_coefficients, constraint_coefficients, constraint_operators, constraint_rhs, goal_coefficients, goal_operators, goal_rhs, goal_priority_type, goal_weights, goal_priorities, unrestricted_variables = process_lp_data(received_data)
-    c = np.array([1,2,1]) 
-    A = np.array([[1, 1,1], [2, -5,1]])
-    b = np.array([7, 10])
+    # print(problem_type)
+    # print(objective_coefficients)
+    # print(objective_type)
+    # print(technique)
+    # print(constraint_coefficients)
+    # print(constraint_operators)
+    # print(constraint_rhs)
+    # print(goal_coefficients)
+    # print(goal_operators)
+    # print(goal_rhs)
+    # print(goal_priority_type)
+    # print(goal_weights)
+    # print(goal_priorities)
+    # print(unrestricted_variables)
 
-    constraint_types = ["=", ">="]
-
-
-    objective = "max"
-    solver = LinearProgrammingSolver(objective_coefficients, constraint_coefficients, constraint_rhs, constraint_types=constraint_operators, method=technique, objective=objective_type)
+    solver = LinearProgrammingSolver(objective_coefficients, constraint_coefficients, constraint_rhs, constraint_types=constraint_operators, method=technique, objective=objective_type,unrestricted_vars=unrestricted_variables)
     optimal_value, solution, tableau_steps = solver.solve()
     print("\nOptimal Solution:", solution)
     print("Optimal Value:", optimal_value)
     solver.print_tableau_steps()
     return solution, optimal_value, tableau_steps
-    # print("---------------------------------------------------------------------------------------------")
-    # print("carcourrr")
-    # solver1 = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="twophase", objective=objective)
-    # optimal_value, solution, tableau_steps = solver1.solve()
-    # print("\nOptimal Solution:", solution)
-    # print("Optimal Value:", optimal_value)
-    # solver1.print_tableau_steps()
-
+   

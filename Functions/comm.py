@@ -22,11 +22,11 @@ def process_data():
         return jsonify({"error": "Missing fields", "missing": missing_fields}), 400
     
     # response = main(data)
-    main(data)
+    optimalZ, xValues, tableaux = main(data)
     response = {
-        "message": "Approval granted",
-        "status": "approved",
-        "receivedData": data
+        "optimalZ": optimalZ,
+        "xValues": xValues,
+        "tableau": tableaux
     }
     return jsonify(response), 200
 
