@@ -1,7 +1,7 @@
 import numpy as np
 
 def create_tableau(c, A, b, is_max):
-    """Constructs the initial tableau with slack variables as a normal 2D array, keeping row and column names separately."""
+    """Constructs the initial tableau with slack variables."""
     if not is_max:
         c = -c  
     num_variables = A.shape[1]
@@ -17,22 +17,26 @@ def create_tableau(c, A, b, is_max):
 
 
 def pivot(tableau, row, col):
-    """Perform the pivot operation in the Simplex Tableau stored as a 2D array."""
-    
-    # Normalize the pivot row
-    tableau[row] /= tableau[row, col]
-    
-    # Perform row operations
+    """Perform the pivot operation in the Simplex Tableau."""
+    tableau[row] /= tableau[row, col] 
     for i in range(len(tableau)):
         if i != row:
-            tableau[i] -= tableau[i, col] * tableau[row]
-    
+            tableau[i] -= tableau[i, col] * tableau[row]  
     return tableau
 
 
 def simplex_with_visualization(tableau, column_names, row_names, is_max, tableau_steps=[]):
     """Simplex algorithm storing tableaux as a list of dictionaries for visualization."""
-    tableaux = [{"tableau": tableau.tolist(), "columns": column_names, "rows": row_names.copy()}]  
+    
+    tableaux = tableau_steps.copy() if tableau_steps else []  
+
+    if not tableau_steps:  
+        tableaux.append({
+            "tableau": tableau.copy().tolist(),  
+            "columns": column_names[:], 
+            "rows": row_names[:] 
+        })  
+
     iteration = 1
 
     while True:
@@ -54,10 +58,11 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max, tableau
         row_names[row_idx] = column_names[col_idx]  
 
         tableaux.append({
-            "tableau": tableau.tolist(),
-            "columns": column_names,
-            "rows": row_names.copy()
+            "tableau": tableau.copy().tolist(),
+            "columns": column_names[:],
+            "rows": row_names[:]
         })
+        
 
         iteration += 1
 

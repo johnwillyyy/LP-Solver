@@ -36,7 +36,8 @@ def main(received_data):
     # print(goal_priority_type)
     # print(goal_weights)
     # print(goal_priorities)
-    # print(unrestricted_variables)
+    print("Carcoura")
+    print(unrestricted_variables)
 
     solver = LinearProgrammingSolver(objective_coefficients, constraint_coefficients, constraint_rhs, constraint_types=constraint_operators, method=technique, objective=objective_type,unrestricted_vars=unrestricted_variables)
     optimal_value, solution, tableau_steps = solver.solve()

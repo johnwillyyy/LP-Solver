@@ -26,7 +26,7 @@ class LinearProgrammingSolver:
         self.c = c
         self.A = A
         self.b = b
-        self.unrestricted_vars = unrestricted_vars if unrestricted_vars else []
+        self.unrestricted_vars = unrestricted_vars if unrestricted_vars.size >0 else []
         self.constraint_types = constraint_types if constraint_types else ["<="] * len(b)
         self.method = method.lower()
         self.maximize = objective.lower() == "max"

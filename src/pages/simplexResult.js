@@ -7,18 +7,23 @@ const SimplexResult = () => {
   const location = useLocation();
   const receivedState = location.state || {};
 
-  const { optimalValue, xValues, tableaux } = receivedState;
+  let { optimalValue, xValues, tableaux } = receivedState;
   const finalTableau = tableaux && tableaux.length > 0 ? tableaux[tableaux.length - 1] : null;
 
   useEffect(() => {
     console.log("Received State in SimplexResult:", receivedState);
   }, [receivedState]);
 
-  if (!optimalValue || !xValues || !finalTableau) {
-    console.error("Error: Missing state data in SimplexResult!");
-    alert("Error: No valid data received. Redirecting to main page.");
-    navigate("/");
-    return null;
+  if (!xValues) {
+    xValues = []; // empty array for xValues
+  }
+
+  if (optimalValue === undefined || optimalValue === null) {
+    optimalValue = "none"; // default to "none" if optimalValue is null or undefined
+  }
+
+  if (!tableaux) {
+    tableaux = []; // empty array for tableaux
   }
 
   const variableNames = finalTableau.columns.slice(0, xValues.length);

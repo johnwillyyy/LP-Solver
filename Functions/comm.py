@@ -16,7 +16,7 @@ def process_data():
         "constraints", "goals", "unrestrictedVariables",
         "goalPriorityType", "goalPriorities", "goalWeights"
     ]
-    
+        
     missing_fields = [field for field in required_fields if field not in data]
     if missing_fields:
         return jsonify({"error": "Missing fields", "missing": missing_fields}), 400
