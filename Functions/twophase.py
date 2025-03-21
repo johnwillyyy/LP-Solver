@@ -42,9 +42,11 @@ def transition_to_phase2(tableau, c, column_names, tableaux_history, is_max):
     return tableau
 
 
-def two_phase_simplex(c, A, b, constraint_types, is_max):
+def two_phase_simplex(c, A, b, constraint_types, is_max,vars_names=None):
     """ Implements the Two-Phase Simplex method. """
-    tableau, column_names, row_names, artificial_vars, tableaux_history = create_first_tableau(c, A, b, constraint_types, is_max,"twophase")
+    if vars_names is None:
+        vars_names = [f"X{i+1}" for i in range(len(c))]  
+    tableau, column_names, row_names, artificial_vars, tableaux_history = create_first_tableau(c, A, b, constraint_types,vars_names, is_max,"twophase")
     solution, phase1_value, phase1_tableaux = simplex_with_visualization(tableau, column_names, row_names, False, tableaux_history)
     if phase1_value is None or abs(phase1_value) > 1e-6:
         print("No feasible solution or problem is unbounded.")

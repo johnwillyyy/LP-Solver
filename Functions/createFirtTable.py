@@ -3,7 +3,7 @@ from tabulate import tabulate
 
 M = 1e6  
 
-def create_first_tableau(c, A, b, constraint_types, is_max=True, method=None):
+def create_first_tableau(c, A, b, constraint_types, vars_names,is_max=True, method=None):
     """Creates the initial tableau for the Big M method with correct variable order and unique names."""
     print("john")
     print(A)
@@ -20,7 +20,7 @@ def create_first_tableau(c, A, b, constraint_types, is_max=True, method=None):
     A_extended[:, :num_vars] = A  
     slack_count, surplus_count, artificial_count = 1, 1, 1
     artificial_vars = []
-    column_names = [f"x{i+1}" for i in range(num_vars)]
+    column_names = vars_names
     j = num_vars
     basics = []
     

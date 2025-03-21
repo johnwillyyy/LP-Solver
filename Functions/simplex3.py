@@ -1,6 +1,6 @@
 import numpy as np
 
-def create_tableau(c, A, b, is_max):
+def create_tableau(c, A, b, is_max,vars_names):
     """Constructs the initial tableau with slack variables."""
     if not is_max:
         c = -c  
@@ -10,7 +10,7 @@ def create_tableau(c, A, b, is_max):
     tableau = np.hstack((A, np.eye(num_constraints), b.reshape(-1, 1)))
     tableau = np.vstack((tableau, np.hstack((-c, np.zeros(num_constraints + 1)))))
 
-    column_names = [f"X{i+1}" for i in range(num_variables)] + [f"S{i+1}" for i in range(num_constraints)] + ["RHS"]
+    column_names = vars_names + [f"S{i+1}" for i in range(num_constraints)] + ["RHS"]
     row_names = [f"S{i+1}" for i in range(num_constraints)] + ["Z"]
 
     return tableau, column_names, row_names
@@ -76,6 +76,8 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max, tableau
     return solution.tolist(), objective_value, tableaux
 
 
-def simplex_method(c, A, b, is_max=True):
-    tableau, column_names, row_names = create_tableau(c, A, b, is_max)
+def simplex_method(c, A, b, is_max=True,vars_names=None):
+    if vars_names is None:
+        vars_names = [f"X{i+1}" for i in range(len(c))]  
+    tableau, column_names, row_names = create_tableau(c, A, b, is_max, vars_names)
     return simplex_with_visualization(tableau, column_names, row_names, is_max)
