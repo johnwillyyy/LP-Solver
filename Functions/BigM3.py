@@ -1,6 +1,6 @@
 import numpy as np
 from simplex3 import simplex_with_visualization
-from createFirtTable import create_first_tableau
+from createFirstTableau import create_first_tableau
 M = 1e6 
 
 def big_m_method(c, A, b, constraint_types, is_max=True,vars_names=None):
