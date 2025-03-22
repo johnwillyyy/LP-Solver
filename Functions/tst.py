@@ -31,7 +31,7 @@ def main():
     unrestricted = np.array([1]) 
 
     print("ana zh2ttt")
-    solver = LinearProgrammingSolver(c, A, b ,unrestricted_vars=unrestricted,method="simplex", objective="min")
+    solver = LinearProgrammingSolver(c, A, b ,unrestricted_vars=unrestricted,method="simplex", objective="max")
     optimal_value, solution, tableau_steps = solver.solve()
     print("\nOptimal Solution:", solution)
     print("Optimal Value:", optimal_value)
