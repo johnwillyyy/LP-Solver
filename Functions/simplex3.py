@@ -1,4 +1,5 @@
 import numpy as np
+from createFirstTableau import create_first_tableau
 
 def create_tableau(c, A, b, is_max,vars_names):
     """Constructs the initial tableau with slack variables."""

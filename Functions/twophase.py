@@ -1,6 +1,6 @@
 import numpy as np
 from simplex3 import simplex_with_visualization
-from createFirtTable import create_first_tableau
+from createFirstTableau import create_first_tableau
 
 
 def remove_artificial_variables(tableau, column_names, row_names, artificial_vars):

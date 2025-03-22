@@ -46,3 +46,18 @@ print("\nOptimal Solution:", solution)
 print("Optimal Value:", optimal_value)
 solver1.print_tableau_steps()
 
+# ______________________________________________________________________________
+# c = np.array([3,2])
+# A = np.array([
+#    [2,1],
+#   [1,2]
+# ])
+# b = np.array([9,9])
+# unrestricted = np.array([1]) 
+
+# print("ana zh2ttt")
+# solver = LinearProgrammingSolver(c, A, b ,unrestricted_vars=unrestricted,method="simplex", objective="max")
+# optimal_value, solution, tableau_steps = solver.solve()
+# print("\nOptimal Solution:", solution)
+# print("Optimal Value:", optimal_value)
+# solver.print_tableau_steps()
