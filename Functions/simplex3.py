@@ -25,46 +25,62 @@ def pivot(tableau, row, col):
             tableau[i] -= tableau[i, col] * tableau[row]  
     return tableau
 
+def simplex_with_visualization(tableau, column_names, row_names, is_max=True, tableau_steps=[], goal_rows=[]):
 
-def simplex_with_visualization(tableau, column_names, row_names, is_max, tableau_steps=[]):
-    """Simplex algorithm storing tableaux as a list of dictionaries for visualization."""
-    
     tableaux = tableau_steps.copy() if tableau_steps else []  
 
     if not tableau_steps:  
         tableaux.append({
-            "tableau": tableau.copy().tolist(),  
-            "columns": column_names[:], 
-            "rows": row_names[:] 
-        })  
+            "tableau": tableau.copy().tolist(),
+            "columns": column_names[:],
+            "rows": row_names[:]
+        })
 
     iteration = 1
 
     while True:
         if (tableau[-1, :-1] >= 0).all():  
             break  
-        
         col_idx = np.argmin(tableau[-1, :-1])  
-        
         if (tableau[:-1, col_idx] <= 0).all():  
             print("Problem is unbounded. Returning None.")
+            tableaux.append({
+                "tableau": tableau.copy().tolist(),
+                "columns": column_names[:],
+                "rows": row_names[:],
+                "note": f"Iteration {iteration}: Problem is unbounded."
+            })
             return None, None, tableaux  
 
+        stop_due_to_goal = False
+        for idx, goal_row in enumerate(goal_rows):
+            if goal_row[col_idx] != 0: 
+                print(f"Stopped due to non-zero element in goal row {idx}, column {col_idx}.")
+                stop_due_to_goal = True
+                tableaux.append({
+                    "tableau": tableau.copy().tolist(),
+                    "columns": column_names[:],
+                    "rows": row_names[:],
+                })
+                break
+
+        if stop_due_to_goal:
+            return None, None, tableaux
+
         ratios = tableau[:-1, -1] / tableau[:-1, col_idx]
-        ratios[tableau[:-1, col_idx] <= 0] = np.inf  
+        ratios[tableau[:-1, col_idx] <= 0] = np.inf 
         row_idx = np.argmin(ratios)  
 
         tableau = pivot(tableau, row_idx, col_idx)
 
         row_names[row_idx] = column_names[col_idx]  
-
         tableaux.append({
             "tableau": tableau.copy().tolist(),
             "columns": column_names[:],
-            "rows": row_names[:]
+            "rows": row_names[:],
+            "note": f"Pivot at row {row_idx}, column {col_idx} (Iteration {iteration})"
         })
         
-
         iteration += 1
 
     solution = np.zeros(len(column_names) - 1)
