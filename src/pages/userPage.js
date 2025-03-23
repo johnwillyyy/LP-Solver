@@ -4,8 +4,8 @@ import "./App.css";
 
 const LinearProgrammingSolver = () => {
   const [problemType, setProblemType] = useState("normal"); // Normal or Goal Programming
-  const [numVariables, setNumVariables] = useState(0);
-  const [numEquations, setNumEquations] = useState(0);
+  const [numVariables, setNumVariables] = useState();
+  const [numEquations, setNumEquations] = useState();
   const [numGoals, setNumGoals] = useState(0);
   const [objectiveCoefficients, setObjectiveCoefficients] = useState([]);
   const [objectiveType, setObjectiveType] = useState("max");
