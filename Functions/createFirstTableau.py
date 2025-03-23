@@ -77,7 +77,7 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
     column_names.append("RHS")
     tableau = np.column_stack((A_extended, rhs))
     row_names = basis
-
+    goal_m=False
     Z_rows = []
     if goal_constraints:
         for i, (sign, priority) in enumerate(zip(goal_signs, priorities)):
@@ -131,31 +131,31 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
     return tableau, column_names, row_names, artificial_vars, tableaux_history, Z_rows, goal_m
 
 
-# Example Usage
-c = np.array([3, 2])
-A = np.array([[1500, 3000]])
-b = np.array([15000])
-constraint_types = ['<=']
-vars_names = ['x1', 'x2']
+# # Example Usage
+# c = np.array([3, 2])
+# A = np.array([[1500, 3000]])
+# b = np.array([15000])
+# constraint_types = ['<=']
+# vars_names = ['x1', 'x2']
 
-# Goal programming parameters
-goal_coeffs = np.array([
-    [200, 0],
-    [100, 400],
-    [0, 250]
-])
-goal_rhs = [1000, 1200, 800]
-goal_signs = ['>=', '>=', '>=']
-priorities = [3, 2, 1]
+# # Goal programming parameters
+# goal_coeffs = np.array([
+#     [200, 0],
+#     [100, 400],
+#     [0, 250]
+# ])
+# goal_rhs = [1000, 1200, 800]
+# goal_signs = ['>=', '>=', '>=']
+# priorities = [3, 2, 1]
 
-# Call the function
-tableau, column_names, row_names, artificial_vars, history, z_rows, goal_m = create_first_tableau(
-    c, A, b, constraint_types, vars_names, is_max=True, method="bigm",
-    goal_coeffs=goal_coeffs, goal_rhs=goal_rhs, goal_signs=goal_signs, goal_constraints=True, priorities=priorities
-)
+# # Call the function
+# tableau, column_names, row_names, artificial_vars, history, z_rows, goal_m = create_first_tableau(
+#     c, A, b, constraint_types, vars_names, is_max=True, method="bigm",
+#     goal_coeffs=goal_coeffs, goal_rhs=goal_rhs, goal_signs=goal_signs, goal_constraints=True, priorities=priorities
+# )
 
-# Display the tableau
-print("Merged Goal Programming + LP Tableau:")
-print(tabulate(tableau, headers=column_names, showindex=row_names, tablefmt="fancy_grid"))
-print("z rows")
-print(z_rows)
+# # Display the tableau
+# print("Merged Goal Programming + LP Tableau:")
+# print(tabulate(tableau, headers=column_names, showindex=row_names, tablefmt="fancy_grid"))
+# print("z rows")
+# print(z_rows)

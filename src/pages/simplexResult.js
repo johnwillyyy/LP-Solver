@@ -6,8 +6,7 @@ const SimplexResult = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const receivedState = location.state || {};
-
-  let { optimalValue, xValues, tableaux } = receivedState;
+  let { optimalValue, xValues, tableaux, problemType } = receivedState;
   const finalTableau = tableaux && tableaux.length > 0 ? tableaux[tableaux.length - 1] : null;
 
   useEffect(() => {
@@ -25,28 +24,70 @@ const SimplexResult = () => {
   if (!tableaux) {
     tableaux = []; // empty array for tableaux
   }
-
+  console.log(xValues);
+  console.log(optimalValue);
   const variableNames = finalTableau.columns.slice(0, xValues.length);
 
   return (
     <div className="container">
       <div className="content-box">
-        <h2 className="title">Simplex Method Results</h2>
+        <h2 className="title">
+          {problemType === "goal" ? "Goal Programming Results" : "Simplex Method Results"}
+        </h2>
 
-        <div className="optimal-value">
-          Optimal Value: <span className="optimal-value-text">{optimalValue}</span>
-        </div>
+        {problemType === "normal" ? (
+          <>
+            <div className="optimal-value">
+              Optimal Value: <span className="optimal-value-text">{optimalValue}</span>
+            </div>
 
-        <div className="solution-box">
-          <p className="solution-title">Solution (X Values):</p>
-          <div className="solution-values">
-            {xValues.map((val, index) => (
-              <span key={index} className="solution-item">
-                {variableNames[index]} = {val.toFixed(2)}
-              </span>
-            ))}
-          </div>
-        </div>
+            <div className="solution-box">
+              <p className="solution-title">Solution (X Values):</p>
+              <div className="solution-values">
+                {xValues.map((val, index) => (
+                  <span key={index} className="solution-item">
+                    {problemType === "normal"
+                      ? `${variableNames[index]} = ${val.toFixed(2)}`
+                      : `x${index + 1} = ${parseFloat(val).toFixed(2)}`}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="goal-status-box">
+              <p className="solution-title">Goal Status:</p>
+              <div className="goal-status-values">
+              {optimalValue.map(([goalName, status], index) => (
+  <div key={index} className="goal-status-item">
+    <strong>{goalName}</strong>:{" "}
+    <span
+      className={
+        status === "Satisfied"
+          ? "status-satisfied"
+          : "status-unsatisfied"
+      }
+                    >
+                      {status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="solution-box">
+              <p className="solution-title">Variable Values:</p>
+              <div className="solution-values">
+                {xValues.map((val, index) => (
+                  <span key={index} className="solution-item">
+                    {`x${index + 1} = ${parseFloat(val).toFixed(2)}`}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
 
         {tableaux.map((tableau, stepIndex) => (
           <div key={stepIndex} className="tableau-container">

@@ -1,5 +1,6 @@
 from solver import LinearProgrammingSolver
 from dataProcessing import *
+from goal import *
 import numpy as np
 
 
@@ -30,6 +31,7 @@ def main(received_data):
     # print(constraint_coefficients)
     # print(constraint_operators)
     # print(constraint_rhs)
+    # print('ffffff')
     # print(goal_coefficients)
     # print(goal_operators)
     # print(goal_rhs)
@@ -37,10 +39,52 @@ def main(received_data):
     # print(goal_weights)
     # print(goal_priorities)
 
-    solver = LinearProgrammingSolver(objective_coefficients, constraint_coefficients, constraint_rhs, constraint_types=constraint_operators, method=technique, objective=objective_type,unrestricted_vars=unrestricted_variables)
-    optimal_value, solution, tableau_steps = solver.solve()
-    print("\nOptimal Solution:", solution)
-    print("Optimal Value:", optimal_value)
-    solver.print_tableau_steps()
-    return solution, optimal_value, tableau_steps
+
+
+    A = np.array([[25.,50.]])
+    b = np.array([80000])
+    constraint_types = ['<=']
+    vars_names = ['x1','x2']
+
+    # Goal programming parameters
+    goal_coeffs = np.array([
+        [0.5,0.25],
+        [3,5]
+        
+    ])
+    goal_rhs = np.array([700, 9000])
+    goal_signs = np.array(['<=','>='])
+    priorities = np.array([1,2])   
+
+    print(A)
+    print(constraint_coefficients)
+    if np.array_equal(A, constraint_coefficients):
+        print('oofff')
+    else:
+        print('lolll')
+
+
+
+
+    is_goal = False
+    if problem_type == 'goal':
+        is_goal = True
+
+    
+
+
+    solver = LinearProgrammingSolver(c=objective_coefficients, A=constraint_coefficients, b=constraint_rhs, constraint_types=constraint_operators, method=technique, objective=objective_type,unrestricted_vars=unrestricted_variables, is_goal=is_goal,
+                                     goal_coeffs=goal_coefficients, goal_rhs=goal_rhs,goal_signs= goal_operators,priorities=goal_priorities)
+    
+    if is_goal:
+        goal_status, solution,tableaux = solver.solve()
+        return goal_status, solution, tableaux
+    else:
+        optimal_value, solution, tableaux = solver.solve()
+        print("\nOptimal Solution:", solution)
+        print("Optimal Value:", optimal_value)
+        solver.print_tableau_steps()
+        return  solution,optimal_value, tableaux
+
+
    

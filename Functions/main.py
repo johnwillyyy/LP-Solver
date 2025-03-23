@@ -1,5 +1,6 @@
 from solver import LinearProgrammingSolver
 import numpy as np
+from goal import *
 
 
 # c = np.array([6,1])
@@ -20,12 +21,12 @@ import numpy as np
 # method = "bigm"
 # objective = "max"
 
-c = np.array([4, 1]) 
-A = np.array([[3,1], [4,3],[1,2]])
-b = np.array([3,6,4])
-constraint_types = ["=", ">=","<="]
-unrestricted = np.array([]) 
-objective = "min"
+# c = np.array([4, 1]) 
+# A = np.array([[3,1], [4,3],[1,2]])
+# b = np.array([3,6,4])
+# constraint_types = ["=", ">=","<="]
+# unrestricted = np.array([]) 
+# objective = "min"
 
 # c = np.array([1, 2,1]) 
 # A = np.array([[1, 1,1], [2, -5,1]])
@@ -33,12 +34,16 @@ objective = "min"
 # constraint_types = ["=", ">="]
 # unrestricted= np.array([]) 
 # objective = "max"
-print(A)
-solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="bigm", objective=objective,unrestricted_vars=unrestricted)
-optimal_value, solution, tableau_steps = solver.solve()
-print("\nOptimal Solution:", solution)
-print("Optimal Value:", optimal_value)
-solver.print_tableau_steps() #beeeeeeeeekkhhhhhh
+# print(A)
+# solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="bigm", objective=objective,unrestricted_vars=unrestricted)
+# optimal_value, solution, tableau_steps = solver.solve()
+# print("\nOptimal Solution:", solution)
+# print("Optimal Value:", optimal_value)
+# solver.print_tableau_steps() #beeeeeeeeekkhhhhhh
+
+
+
+
 print("---------------------------------------------------------------------------------------------")
 print("carcourrr")
 solver1 = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="twophase", objective=objective,unrestricted_vars=unrestricted)
@@ -47,18 +52,4 @@ print("\nOptimal Solution:", solution)
 print("Optimal Value:", optimal_value)
 solver1.print_tableau_steps()
 
-# ______________________________________________________________________________
-# c = np.array([3,2])
-# A = np.array([
-#    [2,1],
-#   [1,2]
-# ])
-# b = np.array([9,9])
-# unrestricted = np.array([1]) 
 
-# print("ana zh2ttt")
-# solver = LinearProgrammingSolver(c, A, b ,unrestricted_vars=unrestricted,method="simplex", objective="max")
-# optimal_value, solution, tableau_steps = solver.solve()
-# print("\nOptimal Solution:", solution)
-# print("Optimal Value:", optimal_value)
-# solver.print_tableau_steps()

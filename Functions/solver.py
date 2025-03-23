@@ -1,13 +1,15 @@
 from simplex3 import simplex_method
 from BigM3 import big_m_method
 from twophase import two_phase_simplex
+from goal import *
 import numpy as np
 from tabulate import tabulate
+from goal import *
 
 import numpy as np
 
 def transform_unrestricted_vars(A, c, unrestricted_vars):
-    num_vars = len(c)
+    num_vars = len(A[0])
     var_names = [f"x{i+1}" for i in range(num_vars)] 
     for index in sorted(unrestricted_vars, reverse=True):
         index = int(index) 
@@ -23,7 +25,8 @@ def transform_unrestricted_vars(A, c, unrestricted_vars):
 
 
 class LinearProgrammingSolver:
-    def __init__(self, c, A, b, unrestricted_vars=None, constraint_types=None, method="simplex", objective="min"):
+    def __init__(self, c, A, b, unrestricted_vars=None, constraint_types=None, method="simplex", objective="min", is_goal=False,
+                 goal_coeffs=[], goal_rhs=[], goal_signs=[], priorities=[]):
         self.c = c
         self.A = A
         self.b = b
@@ -32,11 +35,23 @@ class LinearProgrammingSolver:
         self.method = method.lower()
         self.maximize = objective.lower() == "max"
         self.tableau_steps = []
-
+        self.is_goal=is_goal
+        self.goal_coeffs = goal_coeffs
+        self.goal_rhs=goal_rhs
+        self.goal_signs=goal_signs
+        self.goal_priorities = priorities
         self.A,self.c, self.var_names = transform_unrestricted_vars(self.A,self.c,self.unrestricted_vars)
 
 
     def solve(self):
+        if self.is_goal==True:
+            print('ANA FELGOAAAALLLLLL')
+
+            goal_status, solution, tableaux = goal_programming(self.A, self.b, self.constraint_types,self.var_names ,self.goal_coeffs, self.goal_rhs, self.goal_signs, self.goal_priorities)
+            self.tableau_steps = tableaux
+
+            return goal_status, solution, tableaux  
+
         count = self.constraint_types.count(">=") + self.constraint_types.count("=")
         if count == 0:
             print("ana felsimplex")
@@ -57,41 +72,7 @@ class LinearProgrammingSolver:
             raise ValueError(f"Unknown method: {self.method}")
         
 
-    class goalProgrammingSolver:
-        def __init__(self, c, A, b, gCoeff, gOp, gRes, unrestricted_vars=None, constraint_types=None, method="simplex", objective="min",goalType="weights",goalWeights=None,goalPriorities=None):
-            self.c = c
-            self.A = A
-            self.b = b
-            self.unrestricted_vars = unrestricted_vars if unrestricted_vars else []
-            self.constraint_types = constraint_types if constraint_types else ["<="] * len(b)
-            self.method = method.lower()
-            self.maximize = objective.lower() == "max"
-            self.tableau_steps = []
 
-            self.A,self.c,self.var_names = transform_unrestricted_vars(self.A,self.c,self.unrestricted_vars)
-
-
-
-        def solve(self):
-            count = self.constraint_types.count(">=") + self.constraint_types.count("=")
-            if count == 0:
-                print("ana felsimplex")
-                optimal_value, x_values, tableau_steps = simplex_method(self.c, self.A, self.b, self.maximize,self.var_names)
-                self.tableau_steps = tableau_steps  
-                return optimal_value, x_values, tableau_steps
-            elif self.method == "bigm":
-                print("ana fel BIG M")
-                optimal_value, x_values, tableau_steps = big_m_method(self.c, self.A, self.b, self.constraint_types,  self.maximize,self.var_names)
-                self.tableau_steps = tableau_steps  
-                return optimal_value, x_values, tableau_steps
-            elif self.method == "twophase":
-                print("ana fel 2PHASE")
-                optimal_value, x_values, tableau_steps = two_phase_simplex(self.c, self.A, self.b, self.constraint_types,  self.maximize,self.var_names)
-                self.tableau_steps = tableau_steps  
-                return optimal_value, x_values, tableau_steps    
-            else:
-                raise ValueError(f"Unknown method: {self.method}")
-  
 
     def print_tableau_steps(self):
         """Prints all tableaux in a well-formatted manner for readability."""

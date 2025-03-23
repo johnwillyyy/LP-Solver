@@ -50,7 +50,7 @@ const LinearProgrammingSolver = () => {
       }
   
       const responseData = await response.json();
-      console.log("Server Response:zzzzzzzzzzz", responseData);
+      console.log("Server Response:janjoon", responseData);
   
       // Save state to localStorage
       const stateData = {
@@ -76,7 +76,8 @@ const LinearProgrammingSolver = () => {
           state: {
             optimalValue: responseData.optimalZ,
             xValues: responseData.xValues,
-            tableaux: responseData.tableau // Last tableau step
+            tableaux: responseData.tableau, // Last tableau step
+            problemType: problemType
           }
         });
       }, 2000); // 1 second delay
@@ -284,25 +285,44 @@ const LinearProgrammingSolver = () => {
           
           <h2>Goal Prioritization</h2>
           
-
           {problemType === "goal" && (
-            <div>
-{Array.from({ length: numGoals }).map((_, goalIndex) => (
-  <React.Fragment key={goalIndex}>
-    <input
-      type="text"
-      placeholder={`Priority for Goal ${goalIndex + 1} (e.g. p${goalIndex + 1})`}
-      onChange={(e) => {
-        let updatedPriorities = [...goalPriorities];
-        updatedPriorities[goalIndex] = e.target.value-1;
-        setGoalPriorities(updatedPriorities);
-      }}
-    />
-    {goalIndex < numGoals - 1 && <span style={{ margin: "0 10px" }}> &gt; </span>} {/* Add ">" between inputs */}
-  </React.Fragment>
-))}
-            </div>
-          )}
+  <div>
+    {Array.from({ length: numGoals }).map((_, goalIndex) => (
+      <React.Fragment key={goalIndex}>
+        <input
+          type="number"
+          min="1"
+          max={numGoals}
+          placeholder={`Priority for Goal ${goalIndex + 1}`}
+          onChange={(e) => {
+            const updatedPriorities = [...goalPriorities];
+            updatedPriorities[goalIndex] = e.target.value;
+            setGoalPriorities(updatedPriorities);
+
+            // Convert to integers like [3,1,2]
+            const extracted = updatedPriorities.map((val) =>
+              val ? parseInt(val) : null
+            );
+
+            // Create array of priorities: goal i has rank X
+            const goalRanks = Array(numGoals).fill(0);
+            extracted.forEach((goalNumber, inputIndex) => {
+              if (goalNumber && goalNumber >= 1 && goalNumber <= numGoals) {
+                goalRanks[goalNumber - 1] = inputIndex + 1;
+              }
+            });
+
+            setGoalPriorities(goalRanks);
+          }}
+        />
+        {goalIndex < numGoals - 1 && (
+          <span style={{ margin: "0 10px" }}> &gt; </span>
+        )}
+      </React.Fragment>
+    ))}
+  </div>
+)}
+
         </div>
       )}
 
