@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Tableau from '../components/tableau'
+import NormalResults from "../components/normalResults";
+import GoalResults from "../components/goalResults";
 import "./result.css";
 
 const SimplexResult = () => {
@@ -14,11 +17,11 @@ const SimplexResult = () => {
   }, [receivedState]);
 
   if (!xValues) {
-    xValues = []; // empty array for xValues
+    xValues = []; 
   }
 
   if (optimalValue === undefined || optimalValue === null) {
-    optimalValue = "none"; // default to "none" if optimalValue is null or undefined
+    optimalValue = "none"; 
   }
 
   if (!tableaux) {
@@ -28,6 +31,7 @@ const SimplexResult = () => {
   const variableNames = finalTableau.columns.slice(0, xValues.length);
 
   return (
+
     <div className="container">
       <div className="content-box">
         <h2 className="title">
@@ -35,99 +39,28 @@ const SimplexResult = () => {
         </h2>
 
         {problemType === "normal" ? (
-          <>
-<div className="optimal-value-container">
-  <div className="optimal-value">
-    Optimal Value: <span className="optimal-value-text">{optimalValue}</span>
-  </div>
-  <div className="status">
-    Status: <span className="status-text">{status}</span>
-  </div>
-</div>
-
-
-            <div className="solution-box">
-              <p className="solution-title">Solution (X Values):</p>
-              <div className="solution-values">
-                {xValues.map((val, index) => (
-                  <span key={index} className="solution-item">
-                    {problemType === "normal"
-                      ? `${variableNames[index]} = ${val.toFixed(2)}`
-                      : `x${index + 1} = ${parseFloat(val).toFixed(2)}`}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </>
+          <NormalResults
+            optimalValue={optimalValue}
+            status={status}
+            xValues={xValues}
+            variableNames={variableNames}
+          />
         ) : (
-          <>
-            <div className="goal-status-box">
-              <p className="solution-title">Goal Status:</p>
-              <div className="goal-status-values">
-              {optimalValue.map(([goalName, status], index) => (
-  <div key={index} className="goal-status-item">
-    <strong>{goalName}</strong>:{" "}
-    <span
-      className={
-        status === "Satisfied"
-          ? "status-satisfied"
-          : "status-unsatisfied"
-      }
-                    >
-                      {status}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="solution-box">
-              <p className="solution-title">Variable Values:</p>
-              <div className="solution-values">
-                {xValues.map((val, index) => (
-                  <span key={index} className="solution-item">
-                    {`x${index + 1} = ${parseFloat(val).toFixed(2)}`}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </>
+          <GoalResults
+            optimalValue={optimalValue}
+            xValues={xValues}
+          />
         )}
 
-
-
-        {tableaux.map((tableau, stepIndex) => (
-          <div key={stepIndex} className="tableau-container">
-            <p className="tableau-title">Tableau Step {stepIndex + 1}</p>
-            {tableau.note && <h3 className="tableau-note">{tableau.note}</h3>}
-            <div className="tableau-wrapper">
-              <table className="tableau">
-                <thead>
-                  <tr className="tableau-header">
-                    <th className="tableau-cell">Basis</th>
-                    {tableau.columns.map((col, index) => (
-                      <th key={index} className="tableau-cell">{col}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {tableau.tableau.map((row, rowIndex) => (
-                    <tr key={rowIndex} className="tableau-row">
-                      <td className="tableau-cell basis-cell">
-                        {tableau.rows[rowIndex]}
-                      </td>
-                      {row.map((cell, colIndex) => (
-                        <td key={colIndex} className="tableau-cell">
-                          {parseFloat(cell).toFixed(2)}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <div>
+          {tableaux.map((tableau, stepIndex) => (
+            <div key={stepIndex}>
+              <p className="tableau-title">Tableau Step {stepIndex + 1}</p>
+              <Tableau tableau={tableau} />
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
 
         <div className="button-container">
           <button onClick={() => navigate("/")} className="back-button">
