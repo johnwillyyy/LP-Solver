@@ -1,6 +1,7 @@
 import numpy as np
+from createFirstTableau import *
 
-def create_tableau(c, A, b, is_max,vars_names):
+def create_simplex_tableau(c, A, b, is_max,vars_names):
     """Constructs the initial tableau with slack variables."""
     if not is_max:
         c = -c  
@@ -44,11 +45,6 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max=True, ta
         entering = column_names[col_idx]
         if (tableau[:-1, col_idx] <= 0).all():  
             print("Problem is unbounded.")
-            # tableaux.append({
-            #     "tableau": tableau.copy().tolist(),
-            #     "columns": column_names[:],
-            #     "rows": row_names[:],
-            # })
             return "UNBOUNDED",None, None, tableaux  
 
         stop_due_to_goal = False
@@ -97,5 +93,5 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max=True, ta
 def simplex_method(c, A, b, is_max=True,vars_names=None):
     if vars_names is None:
         vars_names = [f"X{i+1}" for i in range(len(c))]  
-    tableau, column_names, row_names = create_tableau(c, A, b, is_max, vars_names)
+    tableau, column_names, row_names = create_simplex_tableau(c, A, b, is_max, vars_names)
     return simplex_with_visualization(tableau, column_names, row_names, is_max)

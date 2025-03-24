@@ -46,13 +46,18 @@ def two_phase_simplex(c, A, b, constraint_types, is_max,vars_names=None):
     """ Implements the Two-Phase Simplex method. """
     if vars_names is None:
         vars_names = [f"X{i+1}" for i in range(len(c))]  
+
     tableau, column_names, row_names, artificial_vars, tableaux_history,n,g = create_first_tableau(c, A, b, constraint_types,vars_names, is_max,"twophase")
+
     status,solution, phase1_value, phase1_tableaux = simplex_with_visualization(tableau, column_names, row_names, False, tableaux_history)
+
     if phase1_value is None :
         print("UNBOUNDED solution or problem is unbounded.")
         return "UNBOUNDED",None, None, phase1_tableaux  
+    
     if abs(phase1_value) > 1e-6:
         return "INFEASIBLE ",None, None, phase1_tableaux  
+    
     tableau, column_names = remove_artificial_variables(tableau, column_names, row_names, artificial_vars)
     tableaux_history.clear()
     tableau = transition_to_phase2(tableau, c, column_names, tableaux_history, is_max)

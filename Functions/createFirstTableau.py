@@ -91,9 +91,7 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
             Z_rows.append((priority, Z_row, f"G{i+1}"))
 
         Z_rows.sort(key=lambda x: x[0])  
-        # for _, Z_row, name in Z_rows:
-        #     tableau = np.vstack((tableau, np.append(Z_row, [0])))  
-        #     row_names.append(name)
+
 
     elif method in ["bigm", "twophase"]:
         goal_m = True

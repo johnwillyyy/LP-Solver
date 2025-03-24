@@ -20,14 +20,12 @@ def process_lp_data(data):
     goal_rhs = np.array([float(g["rhs"]) for g in goals]) if goals else np.array([])
     
     # Extract goal properties
-    goal_priority_type = data.get("goalPriorityType", "")
-    goal_weights = np.array([float(x) for x in data.get("goalWeights", [])])
     goal_priorities = np.array([float(x) for x in data.get("goalPriorities", [])])
     
     # Extract unrestricted variables
     unrestricted_variables = np.array([int(x) for x in data.get("unrestrictedVariables", [])])
     
-    return problem_type, objective_type, technique, objective_coefficients, constraint_coefficients, constraint_operators, constraint_rhs, goal_coefficients, goal_operators, goal_rhs, goal_priority_type, goal_weights, goal_priorities, unrestricted_variables
+    return problem_type, objective_type, technique, objective_coefficients, constraint_coefficients, constraint_operators, constraint_rhs, goal_coefficients, goal_operators, goal_rhs, goal_priorities, unrestricted_variables
 
 # # Example usage
 # data = {

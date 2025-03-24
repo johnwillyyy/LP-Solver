@@ -14,7 +14,7 @@
 
   .optimal-value,
   .status {
-    font-size: 16px; /* Adjust the font size as needed */
+    font-size: 20px; /* Adjust the font size as needed */
   }
   
   .optimal-value-text,
@@ -80,17 +80,26 @@
     font-weight: bold;
     border: 1px solid #555;
   }
+
+  .status-optimal {
+    color: #28a745; /* A calm, professional green */
+    font-weight: bold;  }
+  
+  .status-nonoptimal {
+    color: #dc3545; /* A refined red */
+    font-weight: bold;  }
   
   /* Tableau Styling */
   .tableau-container {
-    margin-top: 30px;
+    margin-top: 5px;
+    margin-bottom: 20px;
   }
   
   .tableau-title {
     font-size: 18px;
     font-weight: bold;
     color: #ffffff;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
   }
   
   .tableau-wrapper {
@@ -107,6 +116,10 @@
     border: 2px solid #666;
     background: #252525;
     color: #e5e5e5;
+  }
+
+  .tableau-note{
+    margin-top: 0px;
   }
   
   .tableau-header {
@@ -147,4 +160,13 @@
   
   .back-button:hover {
     background: #1d4ed8;
+  }
+  .status-satisfied {
+    color: #28a745; /* A calm, professional green */
+    font-weight: bold;
+  }
+  
+  .status-unsatisfied {
+    color: #dc3545; /* A refined red */
+    font-weight: bold;
   }
