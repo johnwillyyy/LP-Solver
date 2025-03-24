@@ -14,7 +14,7 @@ def process_data():
     required_fields = [
         "problemType", "objectiveCoefficients", "objectiveType", "technique",
         "constraints", "goals", "unrestrictedVariables",
-        "goalPriorityType", "goalPriorities", "goalWeights"
+        "goalPriorities"
     ]
         
     missing_fields = [field for field in required_fields if field not in data]
