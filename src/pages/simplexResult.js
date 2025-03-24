@@ -6,7 +6,7 @@ const SimplexResult = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const receivedState = location.state || {};
-  let { optimalValue, xValues, tableaux, problemType } = receivedState;
+  let { status, optimalValue, xValues, tableaux, problemType } = receivedState;
   const finalTableau = tableaux && tableaux.length > 0 ? tableaux[tableaux.length - 1] : null;
 
   useEffect(() => {
@@ -24,8 +24,7 @@ const SimplexResult = () => {
   if (!tableaux) {
     tableaux = []; // empty array for tableaux
   }
-  console.log(xValues);
-  console.log(optimalValue);
+
   const variableNames = finalTableau.columns.slice(0, xValues.length);
 
   return (
@@ -37,9 +36,15 @@ const SimplexResult = () => {
 
         {problemType === "normal" ? (
           <>
-            <div className="optimal-value">
-              Optimal Value: <span className="optimal-value-text">{optimalValue}</span>
-            </div>
+<div className="optimal-value-container">
+  <div className="optimal-value">
+    Optimal Value: <span className="optimal-value-text">{optimalValue}</span>
+  </div>
+  <div className="status">
+    Status: <span className="status-text">{status}</span>
+  </div>
+</div>
+
 
             <div className="solution-box">
               <p className="solution-title">Solution (X Values):</p>
@@ -89,9 +94,12 @@ const SimplexResult = () => {
           </>
         )}
 
+
+
         {tableaux.map((tableau, stepIndex) => (
           <div key={stepIndex} className="tableau-container">
             <p className="tableau-title">Tableau Step {stepIndex + 1}</p>
+            {tableau.note && <h3 className="tableau-note">{tableau.note}</h3>}
             <div className="tableau-wrapper">
               <table className="tableau">
                 <thead>

@@ -74,6 +74,7 @@ const LinearProgrammingSolver = () => {
         setIsLoading(false); // Stop loading
         navigate("/simplex-result", { 
           state: {
+            status:responseData.status,
             optimalValue: responseData.optimalZ,
             xValues: responseData.xValues,
             tableaux: responseData.tableau, // Last tableau step

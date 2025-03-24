@@ -11,6 +11,17 @@
     padding: 20px;
     color: #e5e5e5;
   }
+
+  .optimal-value,
+  .status {
+    font-size: 16px; /* Adjust the font size as needed */
+  }
+  
+  .optimal-value-text,
+  .status-text {
+    font-weight: bold; /* Optional, make the text bold for emphasis */
+  }
+  
   
   .content-box {
     width: 100%;

@@ -78,7 +78,7 @@ def main(received_data):
     
     if is_goal:
         goal_status, solution,tableaux = solver.solve()
-        return goal_status, solution, tableaux
+        return "", goal_status, solution, tableaux
     else:
         status,optimal_value, solution, tableaux = solver.solve()
         print("\nStatus:")
