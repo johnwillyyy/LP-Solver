@@ -1,6 +1,6 @@
-from simplex3 import simplex_method
-from BigM3 import big_m_method
-from twophase import two_phase_simplex
+from simplex import *
+from BigM import *
+from twophase import *
 from goal import *
 import numpy as np
 from tabulate import tabulate
@@ -55,7 +55,7 @@ class LinearProgrammingSolver:
         count = self.constraint_types.count(">=") + self.constraint_types.count("=")
         if count == 0:
             print("ana felsimplex")
-            status,optimal_value, x_values, tableau_steps = simplex_method(self.c, self.A, self.b, self.maximize, self.var_names)
+            status,optimal_value, x_values, tableau_steps = simplex_method(self.c, self.A, self.b,self.constraint_types, self.maximize, self.var_names)
             self.tableau_steps = tableau_steps  
             return status,optimal_value, x_values, tableau_steps
         elif self.method == "bigm":

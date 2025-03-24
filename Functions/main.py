@@ -2,20 +2,20 @@ from solver import LinearProgrammingSolver
 import numpy as np
 from goal import *
 
-# c = np.array([3,4,1])
-# A = np.array([[3,10,5], [5,2,8],[8,10,3]])
-# b = np.array([120,6,105])
-# constraint_types = ["<=","<=", "<="]
-# unrestricted = np.array([])
-# objective = "max"
+c = np.array([3,4,1])
+A = np.array([[3,10,5], [5,2,8],[8,10,3]])
+b = np.array([120,6,105])
+constraint_types = ["<=","<=", "<="]
+unrestricted = np.array([])
+objective = "max"
 
-# solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="simplex", objective=objective,unrestricted_vars=unrestricted)
-# status,optimal_value, solution, tableau_steps = solver.solve()
+solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="simplex", objective=objective,unrestricted_vars=unrestricted)
+status,optimal_value, solution, tableau_steps = solver.solve()
 
-# print("\nStatus:", status)
-# print("\nOptimal Solution:", solution)
-# print("Optimal Value:", optimal_value)
-# solver.print_tableau_steps() #beeeeeeeeekkhhhhhh
+print("\nStatus:", status)
+print("\nOptimal Solution:", solution)
+print("Optimal Value:", optimal_value)
+solver.print_tableau_steps() #beeeeeeeeekkhhhhhh
 
 # #######unbounded example
 # c = np.array([2, 2] )
@@ -28,16 +28,16 @@ from goal import *
 # unrestricted = np.array([]) 
 # objective = "max"
 
-#####infeasible
-c = np.array([1,1] )
-A = np.array([
-    [1, 1],
-    [1,1]
-])
-b = np.array([5,2])
-constraint_types = [">=", "<="]
-unrestricted = np.array([]) 
-objective = "max"
+# #####infeasible
+# c = np.array([1,1] )
+# A = np.array([
+#     [1, 1],
+#     [1,1]
+# ])
+# b = np.array([5,2])
+# constraint_types = [">=", "<="]
+# unrestricted = np.array([]) 
+# objective = "max"
 
 
 # c = np.array([6,1])
@@ -72,23 +72,23 @@ objective = "max"
 # unrestricted= np.array([]) 
 # objective = "max"
 # print(A)
-solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="bigm", objective=objective,unrestricted_vars=unrestricted)
-status,optimal_value, solution, tableau_steps = solver.solve()
-print("\n Status:", status)
-print("\nOptimal Solution:", solution)
-print("Optimal Value:", optimal_value)
-solver.print_tableau_steps() #beeeeeeeeekkhhhhhh
+# solver = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="bigm", objective=objective,unrestricted_vars=unrestricted)
+# status,optimal_value, solution, tableau_steps = solver.solve()
+# print("\n Status:", status)
+# print("\nOptimal Solution:", solution)
+# print("Optimal Value:", optimal_value)
+# solver.print_tableau_steps() #beeeeeeeeekkhhhhhh
 
 
 
 
-print("---------------------------------------------------------------------------------------------")
-print("carcourrr")
-solver1 = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="twophase", objective=objective,unrestricted_vars=unrestricted)
-status,optimal_value, solution, tableau_steps = solver1.solve()
-print("\n Status:", status)
-print("\nOptimal Solution:", solution)
-print("Optimal Value:", optimal_value)
-solver1.print_tableau_steps()
+# print("---------------------------------------------------------------------------------------------")
+# print("carcourrr")
+# solver1 = LinearProgrammingSolver(c, A, b, constraint_types=constraint_types, method="twophase", objective=objective,unrestricted_vars=unrestricted)
+# status,optimal_value, solution, tableau_steps = solver1.solve()
+# print("\n Status:", status)
+# print("\nOptimal Solution:", solution)
+# print("Optimal Value:", optimal_value)
+# solver1.print_tableau_steps()
 
 

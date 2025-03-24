@@ -77,25 +77,24 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
     column_names.append("RHS")
     tableau = np.column_stack((A_extended, rhs))
     row_names = basis
-    goal_m=False
     Z_rows = []
     if goal_constraints:
         for i, (sign, priority) in enumerate(zip(goal_signs, priorities)):
             Z_row = np.zeros(total_vars)
             if sign == ">=":
                 Z_row[num_vars + 2 * i + 1] = 1  
-                goal_m = False
             elif sign == "<=":
                 Z_row[num_vars + 2 * i] = 1  
-                goal_m = False
             Z_rows.append((priority, Z_row, f"G{i+1}"))
 
         Z_rows.sort(key=lambda x: x[0])  
 
 
-    elif method in ["bigm", "twophase"]:
-        goal_m = True
-        if method == "bigm":
+    elif method in ["bigm", "twophase","simplex"]:
+        if method == "simplex":
+            c_extended = np.zeros(total_vars)
+            c_extended[:num_vars] = -c
+        elif method == "bigm":
             c_extended = np.zeros(total_vars)
             c_extended[:num_vars] = -c
             for a_var in artificial_vars:
@@ -125,8 +124,10 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
                 "columns": column_names,
                 "rows": row_names.copy()
             })
-
-    return tableau, column_names, row_names, artificial_vars, tableaux_history, Z_rows, goal_m
+    if method == "simplex":
+        return tableau, column_names, row_names
+    else:
+        return tableau, column_names, row_names, artificial_vars, tableaux_history, Z_rows
 
 
 # # Example Usage
