@@ -22,8 +22,9 @@ def process_data():
         return jsonify({"error": "Missing fields", "missing": missing_fields}), 400
     
     # response = main(data)
-    optimalZ, xValues, tableaux = main(data)
+    status,optimalZ, xValues, tableaux  = main(data)
     response = {
+        "status":status,
         "optimalZ": optimalZ,
         "xValues": xValues,
         "tableau": tableaux

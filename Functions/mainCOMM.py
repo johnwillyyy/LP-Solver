@@ -80,11 +80,12 @@ def main(received_data):
         goal_status, solution,tableaux = solver.solve()
         return goal_status, solution, tableaux
     else:
-        optimal_value, solution, tableaux = solver.solve()
+        status,optimal_value, solution, tableaux = solver.solve()
+        print("\nStatus:")
         print("\nOptimal Solution:", solution)
         print("Optimal Value:", optimal_value)
         solver.print_tableau_steps()
-        return  solution,optimal_value, tableaux
+        return  status,solution,optimal_value, tableaux
 
 
    

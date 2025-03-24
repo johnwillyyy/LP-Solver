@@ -55,19 +55,19 @@ class LinearProgrammingSolver:
         count = self.constraint_types.count(">=") + self.constraint_types.count("=")
         if count == 0:
             print("ana felsimplex")
-            optimal_value, x_values, tableau_steps = simplex_method(self.c, self.A, self.b, self.maximize, self.var_names)
+            status,optimal_value, x_values, tableau_steps = simplex_method(self.c, self.A, self.b, self.maximize, self.var_names)
             self.tableau_steps = tableau_steps  
-            return optimal_value, x_values, tableau_steps
+            return status,optimal_value, x_values, tableau_steps
         elif self.method == "bigm":
             print("ana fel BIG M")
-            optimal_value, x_values, tableau_steps = big_m_method(self.c, self.A, self.b, self.constraint_types,  self.maximize,self.var_names)
+            status,optimal_value, x_values, tableau_steps = big_m_method(self.c, self.A, self.b, self.constraint_types,  self.maximize,self.var_names)
             self.tableau_steps = tableau_steps  
-            return optimal_value, x_values, tableau_steps
+            return status,optimal_value, x_values, tableau_steps
         elif self.method == "twophase":
             print("ana fel 2PHASE")
-            optimal_value, x_values, tableau_steps = two_phase_simplex(self.c, self.A, self.b, self.constraint_types,  self.maximize,self.var_names)
+            status,optimal_value, x_values, tableau_steps = two_phase_simplex(self.c, self.A, self.b, self.constraint_types,  self.maximize,self.var_names)
             self.tableau_steps = tableau_steps  
-            return optimal_value, x_values, tableau_steps    
+            return status,optimal_value, x_values, tableau_steps    
         else:
             raise ValueError(f"Unknown method: {self.method}")
         
@@ -81,11 +81,13 @@ class LinearProgrammingSolver:
             tableau = step["tableau"]
             columns = step["columns"]
             rows = step["rows"]
+            note = step.get("note", "")  ####### ahe ya John
 
             # Create a table with row names
             table_with_rows = [[rows[j]] + tableau[j] for j in range(len(rows))]
 
             # Print in table format
+            print(note)                  ##### w dy kaman
             print(tabulate(table_with_rows, headers=[""] + columns, tablefmt="grid"))
-
+            
         print("\n" + "="*50)

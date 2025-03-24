@@ -56,7 +56,7 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
             j += 1
         elif t == ">=":
             A_extended[row_idx, j] = -1
-            column_names.append(f"sp{surplus_count}")
+            column_names.append(f"e{surplus_count}")
             surplus_count += 1
             j += 1
             A_extended[row_idx, j] = 1  
@@ -88,7 +88,7 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
             elif sign == "<=":
                 Z_row[num_vars + 2 * i] = 1  
                 goal_m = False
-            Z_rows.append((priority, Z_row, f"Z{i+1}"))
+            Z_rows.append((priority, Z_row, f"G{i+1}"))
 
         Z_rows.sort(key=lambda x: x[0])  
         # for _, Z_row, name in Z_rows:

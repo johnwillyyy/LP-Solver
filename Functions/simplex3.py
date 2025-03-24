@@ -1,5 +1,4 @@
 import numpy as np
-from createFirstTableau import create_first_tableau
 
 def create_tableau(c, A, b, is_max,vars_names):
     """Constructs the initial tableau with slack variables."""
@@ -42,15 +41,15 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max=True, ta
         if (tableau[-1, :-1] >= 0).all():  
             break  
         col_idx = np.argmin(tableau[-1, :-1])  
+        entering = column_names[col_idx]
         if (tableau[:-1, col_idx] <= 0).all():  
-            print("Problem is unbounded. Returning None.")
-            tableaux.append({
-                "tableau": tableau.copy().tolist(),
-                "columns": column_names[:],
-                "rows": row_names[:],
-                "note": f"Iteration {iteration}: Problem is unbounded."
-            })
-            return None, None, tableaux  
+            print("Problem is unbounded.")
+            # tableaux.append({
+            #     "tableau": tableau.copy().tolist(),
+            #     "columns": column_names[:],
+            #     "rows": row_names[:],
+            # })
+            return "UNBOUNDED",None, None, tableaux  
 
         stop_due_to_goal = False
         for idx, goal_row in enumerate(goal_rows):
@@ -60,16 +59,18 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max=True, ta
                 tableaux.append({
                     "tableau": tableau.copy().tolist(),
                     "columns": column_names[:],
-                    "rows": row_names[:],
+                    "rows": row_names[:],         
+                    "note": "Stopped due to non-zero element in goal row {idx}, column {col_idx}"           
                 })
                 break
 
         if stop_due_to_goal:
-            return None, None, tableaux
+            return "UNBOUNDED",None, None, tableaux
 
         ratios = tableau[:-1, -1] / tableau[:-1, col_idx]
         ratios[tableau[:-1, col_idx] <= 0] = np.inf 
         row_idx = np.argmin(ratios)  
+        leaving = row_names[row_idx] 
 
         tableau = pivot(tableau, row_idx, col_idx)
 
@@ -78,7 +79,7 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max=True, ta
             "tableau": tableau.copy().tolist(),
             "columns": column_names[:],
             "rows": row_names[:],
-            "note": f"Pivot at row {row_idx}, column {col_idx} (Iteration {iteration})"
+            "note": f"Entering variable = {entering}, Leaving variable = {leaving}"
         })
         
         iteration += 1
@@ -90,7 +91,7 @@ def simplex_with_visualization(tableau, column_names, row_names, is_max=True, ta
 
     objective_value = tableau[-1, -1] if is_max else -tableau[-1, -1]
     
-    return solution.tolist(), objective_value, tableaux
+    return "OPTIMAL",solution.tolist(), objective_value, tableaux
 
 
 def simplex_method(c, A, b, is_max=True,vars_names=None):

@@ -20,7 +20,6 @@ def solve_goal_programming(tableau, column_names, row_names, Z_rows, goal_m):
             "tableau": tableau.tolist(),
             "columns": column_names,
             "rows": row_names.copy(),
-            
         })
 
         for i, basic_var in enumerate(row_names[:-1]): 
@@ -34,7 +33,7 @@ def solve_goal_programming(tableau, column_names, row_names, Z_rows, goal_m):
                         "rows": row_names.copy(),
                     })
 
-        solution, objective_value, steps = simplex_with_visualization(tableau, column_names, row_names, is_max=True if goal_m else False,goal_rows=goal_rows)
+        status,solution, objective_value, steps = simplex_with_visualization(tableau, column_names, row_names, is_max=True if goal_m else False,goal_rows=goal_rows)
         
         for idx, step in enumerate(steps[1:]):
             tableaux_history.append({
@@ -92,36 +91,36 @@ def goal_programming(A, b, constraint_types, vars_names, goal_coeffs, goal_rhs, 
 def print_tableau(tableau_data, step_number):
     print(tabulate(tableau_data["tableau"], headers=tableau_data["columns"], showindex=tableau_data["rows"], tablefmt="grid"))
 
-# Example Input
-A = np.array([[25,50]])
-b = np.array([80000])
-constraint_types = ['<=']
-vars_names = ['x1','x2']
+# # Example Input
+# A = np.array([[25,50]])
+# b = np.array([80000])
+# constraint_types = ['<=']
+# vars_names = ['x1','x2']
 
-# Goal programming parameters
-goal_coeffs = np.array([
-    [0.5,0.25],
-    [3,5]
+# # Goal programming parameters
+# goal_coeffs = np.array([
+#     [0.5,0.25],
+#     [3,5]
     
-])
-goal_rhs = np.array([700, 9000])
-goal_signs = np.array(['<=','>='])
-priorities = np.array([1,2])   
+# ])
+# goal_rhs = np.array([700, 9000])
+# goal_signs = np.array(['<=','>='])
+# priorities = np.array([1,2])   
 
 
 
-# Solve Goal Programming
-goal_status, solution,tableaux = goal_programming(
-    A, b, constraint_types, vars_names, goal_coeffs, goal_rhs, goal_signs, priorities
-)
+# # Solve Goal Programming
+# goal_status, solution,tableaux = goal_programming(
+#     A, b, constraint_types, vars_names, goal_coeffs, goal_rhs, goal_signs, priorities
+# )
 
-# Display all tableaus with statuses
-for i, tableau_data in enumerate(tableaux):
-    print_tableau(tableau_data, i + 1)
+# # Display all tableaus with statuses
+# for i, tableau_data in enumerate(tableaux):
+#     print_tableau(tableau_data, i + 1)
     
-# Print final goal statuses
-print("\nFinal Goal Status:")
-for goal, status in goal_status:
-    print(f"{goal}: {status}")
+# # Print final goal statuses
+# print("\nFinal Goal Status:")
+# for goal, status in goal_status:
+#     print(f"{goal}: {status}")
 
-print("solution",solution)
+# print("solution",solution)
