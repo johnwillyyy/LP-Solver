@@ -57,7 +57,6 @@ def solve_goal_programming(tableau, column_names, row_names, Z_rows, goal_constr
             "tableau": tableau.tolist(),
             "columns": column_names,
             "rows": row_names.copy(),
-            "note": "After adding weighted Z row"
         })
 
         for i, basic_var in enumerate(row_names[:-1]):  
@@ -71,7 +70,6 @@ def solve_goal_programming(tableau, column_names, row_names, Z_rows, goal_constr
                     "tableau": tableau.tolist(),
                     "columns": column_names,
                     "rows": row_names.copy(),
-                    "note": f"After eliminating column {basic_var}"
                 })
 
         status, solution, objective_value, steps = simplex_with_visualization(
@@ -83,7 +81,7 @@ def solve_goal_programming(tableau, column_names, row_names, Z_rows, goal_constr
                 "tableau": step["tableau"],
                 "columns": step["columns"],
                 "rows": step["rows"],
-                "note": step.get("note", "Simplex step")
+                "note": step.get("note", "")
             })
 
         solution = []
@@ -205,35 +203,3 @@ def goal_programming(A, b, constraint_types, vars_names, goal_coeffs, goal_rhs, 
 
 def print_tableau(tableau_data, step_number):
     print(tabulate(tableau_data["tableau"], headers=tableau_data["columns"], showindex=tableau_data["rows"], tablefmt="grid"))
-
-# A = np.array([[1500,3000]])
-# b = np.array([15000])
-# constraint_types = ['<=']
-# vars_names = ['x1','x2']
-
-
-# goal_coeffs = np.array([
-#     [200,0],
-#     [100,400],
-#     [0,250]
-    
-# ])
-# goal_rhs = np.array([1000, 1200,800])
-# goal_signs = np.array(['>=','>=','>='])
-# # weights = np.array([1,2,1])   
-# priorities = np.array([3,2,1])   
-
-# goal_status, solution,tableaux = goal_programming(
-#     A, b, constraint_types, vars_names, goal_coeffs, goal_rhs, goal_signs, priorities=priorities
-# )
-
-
-# for i, tableau_data in enumerate(tableaux):
-#     print_tableau(tableau_data, i + 1)
-    
-
-# print("\nFinal Goal Status:")
-# for goal, status in goal_status:
-#     print(f"{goal}: {status}")
-
-# print("solution",solution)

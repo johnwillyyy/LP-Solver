@@ -121,7 +121,7 @@ div {
   -webkit-mask-composite: destination-out;
   mask-composite: exclude,add,add,add,add,add,add,add,add;
   -webkit-mask-repeat: no-repeat;
-  animation: l2 4s infinite;
+  animation: l2 5s infinite;
 }
 .loader:before {
   content: "";

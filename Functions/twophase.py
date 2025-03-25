@@ -47,7 +47,7 @@ def two_phase_simplex(c, A, b, constraint_types, is_max,vars_names=None):
     if vars_names is None:
         vars_names = [f"X{i+1}" for i in range(len(c))]  
 
-    tableau, column_names, row_names, artificial_vars, tableaux_history,n = create_first_tableau(c, A, b, constraint_types,vars_names, is_max,"twophase")
+    tableau, column_names, row_names, artificial_vars, tableaux_history = create_first_tableau(c, A, b, constraint_types,vars_names, is_max,"twophase")
 
     status,solution, phase1_value, phase1_tableaux = simplex_with_visualization(tableau, column_names, row_names, False, tableaux_history)
 
