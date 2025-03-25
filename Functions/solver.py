@@ -26,7 +26,7 @@ def transform_unrestricted_vars(A, c, unrestricted_vars):
 
 class LinearProgrammingSolver:
     def __init__(self, c, A, b, unrestricted_vars=None, constraint_types=None, method="simplex", objective="min", is_goal=False,
-                 goal_coeffs=[], goal_rhs=[], goal_signs=[], priorities=[]):
+                 goal_coeffs=[], goal_rhs=[], goal_signs=[], priorities=[],weights=[]):
         self.c = c
         self.A = A
         self.b = b
@@ -40,6 +40,7 @@ class LinearProgrammingSolver:
         self.goal_rhs=goal_rhs
         self.goal_signs=goal_signs
         self.goal_priorities = priorities
+        self.weights=weights
         self.A,self.c, self.var_names = transform_unrestricted_vars(self.A,self.c,self.unrestricted_vars)
 
 
@@ -47,7 +48,7 @@ class LinearProgrammingSolver:
         if self.is_goal==True:
             print('ANA FELGOAAAALLLLLL')
 
-            goal_status, solution, tableaux = goal_programming(self.A, self.b, self.constraint_types,self.var_names ,self.goal_coeffs, self.goal_rhs, self.goal_signs, self.goal_priorities)
+            goal_status, solution, tableaux = goal_programming(self.A, self.b, self.constraint_types,self.var_names ,self.goal_coeffs, self.goal_rhs, self.goal_signs, self.goal_priorities,self.weights)
             self.tableau_steps = tableaux
 
             return goal_status, solution, tableaux  

@@ -78,7 +78,7 @@ def create_first_tableau(c, A, b, constraint_types, vars_names, is_max=True, met
     tableau = np.column_stack((A_extended, rhs))
     row_names = basis
     Z_rows = []
-    if goal_constraints:
+    if goal_constraints and priorities is not None and len(priorities) >= 1:
         for i, (sign, priority) in enumerate(zip(goal_signs, priorities)):
             Z_row = np.zeros(total_vars)
             if sign == ">=":
