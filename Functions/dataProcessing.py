@@ -21,11 +21,13 @@ def process_lp_data(data):
     
     # Extract goal properties
     goal_priorities = np.array([float(x) for x in data.get("goalPriorities", [])])
-    
+    goal_weights = np.array([float(x) for x in data.get("goalWeights", [])])
+
+    goal_type = data.get("goalType","")
     # Extract unrestricted variables
     unrestricted_variables = np.array([int(x) for x in data.get("unrestrictedVariables", [])])
     
-    return problem_type, objective_type, technique, objective_coefficients, constraint_coefficients, constraint_operators, constraint_rhs, goal_coefficients, goal_operators, goal_rhs, goal_priorities, unrestricted_variables
+    return problem_type, objective_type, technique, objective_coefficients, constraint_coefficients, constraint_operators, constraint_rhs, goal_coefficients, goal_operators, goal_rhs, goal_type,goal_priorities,goal_weights, unrestricted_variables
 
 # # Example usage
 # data = {

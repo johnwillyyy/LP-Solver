@@ -19,6 +19,9 @@ const LinearProgrammingSolver = () => {
   const [goals, setGoals] = useState([]);
   const [unrestrictedVariables, setUnrestrictedVariables] = useState([]);
   const [goalPriorities, setGoalPriorities] = useState([]);
+  const [goalType, setGoalType] = useState("priorities"); // Goal Type (Weights/Priorities)
+  const [goalWeights, setGoalWeights] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -48,6 +51,7 @@ const LinearProgrammingSolver = () => {
     if (problemType === "normal") {
     if (objectiveCoefficients.length !== numVariables || objectiveCoefficients.some(v => v === "" || !isNumeric(v))) return true;
     }
+
     for (let constraint of constraints) {
       if (!constraint || constraint.coefficients.length !== numVariables ||
         constraint.coefficients.some(v => v === "" || !isNumeric(v)) ||
@@ -60,7 +64,7 @@ const LinearProgrammingSolver = () => {
           goal.coefficients.some(v => v === "" || !isNumeric(v)) ||
           goal.rhs === "" || !isNumeric(goal.rhs)) return true;
       }
-      if (goalPriorities.length !== numGoals || goalPriorities.some(v => v === undefined || v === "" || isNaN(v))) return true;
+      // if (goalPriorities.length !== numGoals || goalPriorities.some(v => v === undefined || v === "" || isNaN(v))) return true;
     }
     return false;
   };
@@ -79,9 +83,11 @@ const LinearProgrammingSolver = () => {
       constraints,
       goals,
       unrestrictedVariables,
-      goalPriorities
+      goalPriorities,
+      goalType,
+      goalWeights
     };
-
+    console.log(requestData);
     try {
       setIsLoading(true);
       const response = await fetch("http://127.0.0.1:5000/process-data", {
@@ -107,7 +113,10 @@ const LinearProgrammingSolver = () => {
         constraints,
         goals,
         unrestrictedVariables,
-        goalPriorities
+        goalPriorities,
+        goalType, // Send goalType to the server
+        goalWeights // Send goalWeights to the server
+  
       }));
 
       setTimeout(() => {
@@ -167,7 +176,7 @@ const LinearProgrammingSolver = () => {
         setValues={setConstraints}
       />
 
-      {problemType === "goal" && (
+{problemType === "goal" && (
         <GoalProgrammingSection
           numGoals={numGoals}
           numVariables={numVariables}
@@ -175,6 +184,10 @@ const LinearProgrammingSolver = () => {
           setGoals={setGoals}
           goalPriorities={goalPriorities}
           setGoalPriorities={setGoalPriorities}
+          goalType={goalType}
+          setGoalType={setGoalType} // Set Goal Type
+          goalWeights={goalWeights}
+          setGoalWeights={setGoalWeights} // Set Goal Weights
         />
       )}
 

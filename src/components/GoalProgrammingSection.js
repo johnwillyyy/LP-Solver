@@ -7,8 +7,19 @@ const GoalProgrammingSection = ({
   goals,
   setGoals,
   goalPriorities,
-  setGoalPriorities
+  setGoalPriorities,
+  goalType,
+  setGoalType,
+  goalWeights,
+  setGoalWeights
 }) => {
+
+  const handleWeightsChange = (index, value) => {
+    const updated = [...goalWeights];
+    updated[index] = parseFloat(value); // Convert input value to a number
+    setGoalWeights(updated);
+  };
+
   const handlePriorities = (index, value) => {
     const updated = [...goalPriorities];
     updated[index] = value;
@@ -36,18 +47,50 @@ const GoalProgrammingSection = ({
       />
 
       <h2>Goal Prioritization</h2>
-      {Array.from({ length: numGoals }).map((_, index) => (
-        <React.Fragment key={index}>
-          <input
-            type="number"
-            min="1"
-            max={numGoals}
-            placeholder={`Priority for Goal ${index + 1}`}
-            onChange={(e) => handlePriorities(index, e.target.value)}
-          />
-          {index < numGoals - 1 && <span style={{ margin: "0 10px" }}>&gt;</span>}
-        </React.Fragment>
-      ))}
+
+      <label>
+        Goal Type:
+        <select value={goalType} onChange={(e) => setGoalType(e.target.value)}>
+          <option value="weights">Weights</option>
+          <option value="priorities">Priorities</option>
+        </select>
+      </label>
+
+      {goalType === "weights" && (
+        <div>
+          <h4>Goal Weights</h4>
+          {Array.from({ length: numGoals }).map((_, goalIndex) => (
+            <input
+              key={goalIndex}
+              type="number"
+              placeholder={`Weight for Goal ${goalIndex + 1}`}
+              value={goalWeights[goalIndex] || ''} // Show empty if undefined
+              onChange={(e) => handleWeightsChange(goalIndex, e.target.value)}
+            />
+          ))}
+        </div>
+      )}
+
+
+      {/* Goal Priorities (if Goal Type is "priorities") */}
+      {goalType === "priorities" && (
+        <div>
+          <h4>Goal Priorities</h4>
+          {Array.from({ length: numGoals }).map((_, goalIndex) => (
+            <React.Fragment key={goalIndex}>
+              <input
+                type="number"
+                min="1"
+                max={numGoals}
+                placeholder={`Priority for Goal ${goalIndex + 1}`}
+                value={goalPriorities[goalIndex] || ''}
+                onChange={(e) => handlePriorities(goalIndex, e.target.value)}
+              />
+              {goalIndex < numGoals - 1 && <span style={{ margin: "0 10px" }}>&gt;</span>}
+            </React.Fragment>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
